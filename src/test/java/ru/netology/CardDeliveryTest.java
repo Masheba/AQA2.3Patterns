@@ -24,7 +24,6 @@ public class CardDeliveryTest {
 
         @Test
         void shouldSubmitRequest() {
-            Configuration.timeout = 15000;
             String firstMeetingDate = DataGenerator.forwardDate(4);
             String secondMeetingDate = DataGenerator.forwardDate(5);
             $("[placeholder='Город']").setValue(DataGenerator.randomCity());
@@ -34,7 +33,7 @@ public class CardDeliveryTest {
             $(".checkbox__box").click();
             $(".button__text").click();
             $(".notification__content").shouldBe(visible)
-                    .shouldHave(exactText("Встреча успешно забронирована на " +firstMeetingDate));
+                    .shouldHave(exactText("Встреча успешно запланирована на " +firstMeetingDate));
             $("input[placeholder=\"Дата встречи\"]").doubleClick().sendKeys(Keys.BACK_SPACE);
             $("[placeholder='Дата встречи']").doubleClick().sendKeys(secondMeetingDate);
             $(".button__text").click();
