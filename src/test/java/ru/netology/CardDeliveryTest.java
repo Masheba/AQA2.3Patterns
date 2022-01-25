@@ -2,7 +2,11 @@ package ru.netology;
 
 
 
-import com.codeborne.selenide.Configuration;
+
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -15,7 +19,17 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class CardDeliveryTest {
 
-        DataGenerator dataGenerator = new DataGenerator();
+    DataGenerator dataGenerator = new DataGenerator();
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
 
         @BeforeEach
         void Setup() {
@@ -46,9 +60,9 @@ public class CardDeliveryTest {
 
         @Test
         void shouldNotSubmitWithoutCity() {
-            $("[placeholder='Дата встречи']").doubleClick().sendKeys(dataGenerator.forwardDate(3));
-            $("[name=name]").setValue(dataGenerator.randomName());
-            $("[name=phone]").setValue(dataGenerator.randomPhone());
+            $("[placeholder='Дата встречи']").doubleClick().sendKeys(DataGenerator.forwardDate(3));
+            $("[name=name]").setValue(DataGenerator.randomName());
+            $("[name=phone]").setValue(DataGenerator.randomPhone());
             $(".checkbox__box").click();
             $(".button__text").click();
             $(".input_theme_alfa-on-white.input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
@@ -56,9 +70,9 @@ public class CardDeliveryTest {
 
         @Test
         void shouldNotSubmitWithoutName() {
-            $("[placeholder='Город']").setValue(dataGenerator.randomCity());
-            $("[placeholder='Дата встречи']").doubleClick().sendKeys(dataGenerator.forwardDate(3));
-            $("[name=phone]").setValue(dataGenerator.randomPhone());
+            $("[placeholder='Город']").setValue(DataGenerator.randomCity());
+            $("[placeholder='Дата встречи']").doubleClick().sendKeys(DataGenerator.forwardDate(3));
+            $("[name=phone]").setValue(DataGenerator.randomPhone());
             $(".checkbox__box").click();
             $(".button__text").click();
             $(".input_theme_alfa-on-white.input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
@@ -66,10 +80,10 @@ public class CardDeliveryTest {
 
         @Test
         void shouldNotSubmitWithIncorrectName() {
-            $("[placeholder='Город']").setValue(dataGenerator.randomCity());
-            $("[placeholder='Дата встречи']").doubleClick().sendKeys(dataGenerator.forwardDate(3));
+            $("[placeholder='Город']").setValue(DataGenerator.randomCity());
+            $("[placeholder='Дата встречи']").doubleClick().sendKeys(DataGenerator.forwardDate(3));
             $("[name=name]").setValue("Nikolay Ageev");
-            $("[name=phone]").setValue(dataGenerator.randomPhone());
+            $("[name=phone]").setValue(DataGenerator.randomPhone());
             $(".checkbox__box").click();
             $(".button__text").click();
             $(".input_theme_alfa-on-white.input_invalid .input__sub").shouldHave(exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
@@ -77,9 +91,9 @@ public class CardDeliveryTest {
 
         @Test
         void shouldNotSubmitWithoutPhoneNumber() {
-            $("[placeholder='Город']").setValue(dataGenerator.randomCity());
-            $("[placeholder='Дата встречи']").doubleClick().sendKeys(dataGenerator.forwardDate(3));
-            $("[name=name]").setValue(dataGenerator.randomName());
+            $("[placeholder='Город']").setValue(DataGenerator.randomCity());
+            $("[placeholder='Дата встречи']").doubleClick().sendKeys(DataGenerator.forwardDate(3));
+            $("[name=name]").setValue(DataGenerator.randomName());
             $(".checkbox__box").click();
             $(".button__text").click();
             $(".input_theme_alfa-on-white.input_invalid .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
@@ -87,10 +101,10 @@ public class CardDeliveryTest {
 
         @Test
         void shouldNotSubmitWithoutCheckbox() {
-            $("[placeholder='Город']").setValue(dataGenerator.randomCity());
-            $("[placeholder='Дата встречи']").doubleClick().sendKeys(dataGenerator.forwardDate(3));
-            $("[name=name]").setValue(dataGenerator.randomName());
-            $("[name=phone]").setValue(dataGenerator.randomPhone());
+            $("[placeholder='Город']").setValue(DataGenerator.randomCity());
+            $("[placeholder='Дата встречи']").doubleClick().sendKeys(DataGenerator.forwardDate(3));
+            $("[name=name]").setValue(DataGenerator.randomName());
+            $("[name=phone]").setValue(DataGenerator.randomPhone());
             $(".button__text").click();
             $(".input_invalid").shouldHave(exactText("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
         }

@@ -1,6 +1,10 @@
 plugins {
     id 'java'
-    }
+    id 'io.qameta.allure' version '2.8.1'
+}
+
+group 'ru.netology'
+version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
 
@@ -8,20 +12,32 @@ sourceCompatibility = 11
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
+
+allure {
+    autoconfigure = true
+    version = '2.13.3'
+    useJUnit5 {
+        version = '2.13.3'
+
+        configuration = "testImplementation"
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-    testImplementation 'com.codeborne:selenide:5.17.2'
-    implementation 'org.slf4j:slf4j-simple:1.7.32'
+    testImplementation 'com.codeborne:selenide:5.15.1'
+    implementation 'org.slf4j:slf4j-simple:1.7.33'
     testImplementation 'com.github.javafaker:javafaker:1.0.2'
+    testImplementation 'io.qameta.allure:allure-selenide:2.13.3'
 
 }
 
 test {
     useJUnitPlatform()
-    // в тестах, вызывая `gradlew test -Dselenide.headless=true` будем передавать этот параметр в JVM (где его подтянет Selenide)
+    // в тестах, вызывая `gradlew test -D selenide.headless=true` будем передавать этот параметр в JVM (где его подтянет Selenide)
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
 }
